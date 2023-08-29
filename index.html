@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Reverse Hash</title>
+</head>
+<script>
+    //for Android Success
+    function AndroidSuccess(input) {
+        //alert(input);
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:4500/reverse-hash", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(JSON.stringify({
+            "hash": input
+        }));
+    
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                // Transaction is successful
+                PayU.onSuccess(input);
+            } else {
+                // Transaction is tempered
+                PayU.onFailure(input);
+            }
+        };
+    }
+    </script>
+<body>
+
+<h1>Reverse Hash</h1>
+
+<form action="/reverse-hash" method="post">
+  <input type="text" name="key" placeholder="Key">
+  <input type="text" name="txnid" placeholder="Txnid">
+  <input type="text" name="amount" placeholder="Amount">
+  <input type="text" name="productinfo" placeholder="Productinfo">
+  <input type="text" name="firstname" placeholder="Firstname">
+  <input type="text" name="email" placeholder="Email">
+  <input type="text" name="udf1" placeholder="Udf1">
+  <input type="text" name="udf2" placeholder="Udf2">
+  <input type="text" name="udf3" placeholder="Udf3">
+  <input type="text" name="udf4" placeholder="Udf4">
+  <input type="text" name="udf5" placeholder="Udf5">
+  <input type="text" name="status" placeholder="Status">
+  <input type="submit" value="Submit">
+</form>
+
+</body>
+</html>
