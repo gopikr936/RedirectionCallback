@@ -28,6 +28,7 @@ app.post("/reverse-hash", (req, res) => {
   //const reverseHash = getReverseHash(salt, txnid, amount, productinfo, firstname, email, udf1, udf2, udf3, udf4, udf5, status);
 
   if (status === "success") {
+    res.setHeader('Content-Type', 'text/plain');
     res.send({
       status: "success",
       message: "Transaction successful",
@@ -47,6 +48,7 @@ app.post("/reverse-hash", (req, res) => {
       },
     });
   } else {
+    res.setHeader('Content-Type', 'text/plain');
     res.send({ status: "error", message:"Transaction Failed" });
   }
 });
