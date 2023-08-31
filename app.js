@@ -4,8 +4,12 @@ const sha512 = require("crypto-js/sha512");
 
 const app = express();
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post("/reverse-hash", (req, res) => {
+
+  console.log("Gopi ", req.body);
+
   const key = req.body.key;
   const txnid = req.body.txnid;
   const amount = req.body.amount;
@@ -47,10 +51,10 @@ app.post("/reverse-hash", (req, res) => {
   }
 });
 
-function getReverseHash(salt, txnid, amount, productinfo, firstname, email, udf1, udf2, udf3, udf4, udf5, status) {
-  const data = [salt, status, "", "", "", "", udf5, udf4, udf3, udf2, udf1, email, firstname, productinfo, amount, txnid, key];
-  const str = data.join("|");
-  return sha512(str).toString();
-}
+// function getReverseHash(salt, txnid, amount, productinfo, firstname, email, udf1, udf2, udf3, udf4, udf5, status) {
+//   const data = [salt, status, "", "", "", "", udf5, udf4, udf3, udf2, udf1, email, firstname, productinfo, amount, txnid, key];
+//   const str = data.join("|");
+//   return sha512(str).toString();
+// }
 
-app.listen(3000, () => console.log("Server is running on port 3000"));
+app.listen(8003, () => console.log("Server is running on port 8003"));
