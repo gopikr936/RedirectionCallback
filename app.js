@@ -1,12 +1,11 @@
 const express = require("express");
-const app = express();
 const bodyParser = require("body-parser");
+const sha512 = require("crypto-js/sha512");
 
+const app = express();
 app.use(bodyParser.json());
 
-// Create a route to handle the reverse hash calculation
 app.post("/reverse-hash", (req, res) => {
-  // Get the parameters from the request
   const key = req.body.key;
   const txnid = req.body.txnid;
   const amount = req.body.amount;
@@ -20,47 +19,38 @@ app.post("/reverse-hash", (req, res) => {
   const udf5 = req.body.udf5;
   const status = req.body.status;
 
-  res.send({
-    status: "success",
-    message: "Transaction successful",
-  });
+  const salt = "eCwWELxi";
 
-  // Generate the reverse hash
-  const reverseHash = getReverseHash(key, txnid, amount, productinfo, firstname, email, udf1, udf2, udf3, udf4, udf5, status);
+  const reverseHash = getReverseHash(salt, txnid, amount, productinfo, firstname, email, udf1, udf2, udf3, udf4, udf5, status);
 
-  // Check if the hash from the request matches the generated reverse hash
-  if (req.body.hash === reverseHash) {
-    // Transaction is successful
+  if (reverseHash === req.query.hash) {
     res.send({
       status: "success",
       message: "Transaction successful",
+      data: {
+        key,
+        txnid,
+        amount,
+        productinfo,
+        firstname,
+        email,
+        udf1,
+        udf2,
+        udf3,
+        udf4,
+        udf5,
+        status,
+      },
     });
   } else {
-    // Transaction is tempered
-    res.send({
-      status: "error",
-      message: "Transaction failed",
-    });
+    res.send({ status: "error", message:"Transaction Failed" });
   }
 });
 
-// Function to generate reverse hash
-function getReverseHash(key, txnid, amount, productinfo, firstname, email, udf1, udf2, udf3, udf4, udf5, status) {
-  // Get the salt from the environment variable
-  const salt = process.env.SALT;
-
-  // Create the reverse hash string
-  const reversehash_string = salt + "|" + status + "||||||" + udf5 + "|" + udf4 + "|" + udf3 + "|" + udf2 + "|" + udf1 + "|" + email + "|" + firstname + "|" + productinfo + "|" + amount + "|" + txnid + "|" + key;
-
-  // Generate the reverse hash
-  const reverseHash = sha512(reversehash_string);
-
-  // Return the reverse hash
-  return reverseHash;
+function getReverseHash(salt, txnid, amount, productinfo, firstname, email, udf1, udf2, udf3, udf4, udf5, status) {
+  const data = [salt, status, "", "", "", "", udf5, udf4, udf3, udf2, udf1, email, firstname, productinfo, amount, txnid, key];
+  const str = data.join("|");
+  return sha512(str).toString();
 }
 
-// Start the server
-app.listen(4500, () => {
-  console.log("Server listening on port 4500");
-});
-
+app.listen(3000, () => console.log("Server is running on port 3000"));
