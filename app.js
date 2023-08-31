@@ -13,21 +13,21 @@ app.post("/reverse-hash", (req, res) => {
   const key = req.body.key;
   const txnid = req.body.txnid;
   const amount = req.body.amount;
-  const productinfo = req.body.productinfo;
-  const firstname = req.body.firstname;
-  const email = req.body.email;
-  const udf1 = req.body.udf1;
-  const udf2 = req.body.udf2;
-  const udf3 = req.body.udf3;
-  const udf4 = req.body.udf4;
-  const udf5 = req.body.udf5;
+  //const productinfo = req.body.productinfo;
+  // const firstname = req.body.firstname;
+  // const email = req.body.email;
+  // const udf1 = req.body.udf1;
+  // const udf2 = req.body.udf2;
+  // const udf3 = req.body.udf3;
+  // const udf4 = req.body.udf4;
+  // const udf5 = req.body.udf5;
   const status = req.body.status;
 
-  const salt = "eCwWELxi";
+  //const salt = "eCwWELxi";
 
-  const reverseHash = getReverseHash(salt, txnid, amount, productinfo, firstname, email, udf1, udf2, udf3, udf4, udf5, status);
+  //const reverseHash = getReverseHash(salt, txnid, amount, productinfo, firstname, email, udf1, udf2, udf3, udf4, udf5, status);
 
-  if (reverseHash === req.query.hash) {
+  if (status === "success") {
     res.send({
       status: "success",
       message: "Transaction successful",
@@ -35,14 +35,14 @@ app.post("/reverse-hash", (req, res) => {
         key,
         txnid,
         amount,
-        productinfo,
-        firstname,
-        email,
-        udf1,
-        udf2,
-        udf3,
-        udf4,
-        udf5,
+        // productinfo,
+        // firstname,
+        // email,
+        // udf1,
+        // udf2,
+        // udf3,
+        // udf4,
+        // udf5,
         status,
       },
     });
